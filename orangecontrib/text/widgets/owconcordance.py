@@ -189,7 +189,7 @@ class OWConcordance(OWWidget, ConcurrentWidgetMixin):
         query_word = Input("Query Word", Topic)
 
     class Outputs:
-        selected_documents = Output("Selected Documents", Corpus)
+        selected_documents = Output("Selected Documents", Corpus, default=True)
         concordances = Output("Concordances", Corpus)
 
     settingsHandler = PerfectDomainContextHandler(
@@ -252,9 +252,6 @@ class OWConcordance(OWWidget, ConcurrentWidgetMixin):
         # Auto-commit box
         gui.auto_commit(self.controlArea, self, 'autocommit', 'Commit',
                         'Auto commit is on')
-
-    def sizeHint(self): # pragma: no cover
-        return QSize(600, 400)
 
     def set_width(self):
         sel = self.conc_view.selectionModel().selection()

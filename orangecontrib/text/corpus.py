@@ -85,7 +85,7 @@ class Corpus(Table):
         self._ngrams_corpus = None
         self.ngram_range = (1, 1)
         self.attributes = {}
-        self.pos_tags = None
+        self._pos_tags = None
         from orangecontrib.text.preprocess import PreprocessorList
         self.__used_preprocessor = PreprocessorList([])   # required for compute values
         self._titles: Optional[np.ndarray] = None
@@ -448,6 +448,20 @@ class Corpus(Table):
             return self._base_tokens()[1]
         return self._dictionary
 
+    @property
+    def pos_tags(self):
+        """
+            np.ndarray: A list of lists containing POS tags. If there are no
+            POS tags available, return None.
+        """
+        if self._pos_tags is None:
+            return None
+        return np.array(self._pos_tags, dtype=object)
+
+    @pos_tags.setter
+    def pos_tags(self, pos_tags):
+        self._pos_tags = pos_tags
+
     def ngrams_iterator(self, join_with=' ', include_postags=False):
         if self.pos_tags is None:
             include_postags = False
@@ -497,6 +511,7 @@ class Corpus(Table):
         c.used_preprocessor = self.used_preprocessor
         c._titles = self._titles
         c._pp_documents = self._pp_documents
+        c._ngrams_corpus = self._ngrams_corpus
         return c
 
     @staticmethod
@@ -645,6 +660,8 @@ class Corpus(Table):
             new.ngram_range = orig.ngram_range
             new.attributes = orig.attributes
             new.used_preprocessor = orig.used_preprocessor
+            if orig._ngrams_corpus is not None:
+                new.ngrams_corpus = orig._ngrams_corpus[key]
 
     def __eq__(self, other):
         def arrays_equal(a, b):
@@ -677,8 +694,8 @@ if summarize:
         table_summary = summarize.dispatch(Table)(corpus)
         extras = (
             (
-                f"<br/><nobr>Total tokens: {sum(map(len, corpus.tokens))}, "
-                f"Number unique tokens: {len(corpus.dictionary)}</nobr>"
+                f"<br/><nobr>Tokens: {sum(map(len, corpus.tokens))}, "
+                f"Types: {len(corpus.dictionary)}</nobr>"
             )
             if corpus.has_tokens()
             else "<br/><nobr>Corpus is not preprocessed</nobr>"

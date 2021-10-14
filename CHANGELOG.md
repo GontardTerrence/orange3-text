@@ -5,7 +5,45 @@ Change Log
 ------------
 * ...
 
+[1.5.3] - 2021-10-08
+--------------------
+##### Bugfixes
+*  UDPipe Lemmatizer: remove self.model from pickle ([#722](../../pull/722))
+* Fixes for Tweepy 4.0.0 ([#725](../../pull/725))
+
+
+[1.5.1] - 2021-09-16
+--------------------
+##### Bugfixes
+* Fixing bug with non-working Gensim library
+
+
+[1.5.0] - 2021-09-13
+--------------------
+
+##### Enhancements
+* Keywords: Add 'Embedding' scoring method ([#666](../../pull/666))
+* OW Corpus Viewer: Add annotated corpus output ([#672](../../pull/672))
+* Concordance - search in the separate thread ([#668](../../pull/668))
+* OWPreprocess Text: add option to filter on POS tags ([#679](../../pull/679))
+* Topic Modeling: Add topic evaluation scores ([#687](../../pull/687))
+* OWStatistics: Add new statistics method ([#676](../../pull/676))
+* Import Documents: Add conllu reader ([#675](../../pull/675))
+* OWPreprocess Text: Add Lemmagen normalizer ([#708](../../pull/708))
+* normalize: speedup preprocessing with caching ([#709](../../pull/709))
+* Score documents: Document selection and selection output ([#710](../../pull/710))
+
+##### Bugfixes
+* Import Documents: Read metas as the right type ([#677](../../pull/677))
+* LDA: Add random state ([#688](../../pull/688))
+* Preprocess: Filter POS tags along with tokens ([#692](../../pull/692))
+* Topic Modeling: Remove tags from display of topics ([#693](../../pull/693))
+* Score documents: fix word preprocessing ([#707](../../pull/707))
+* Make Lemmagen lemmatizer picklable ([#713](../../pull/713))
+* Document Embedder: fix default language setting ([#716](../../pull/716))
+
 [1.4.0] - 2021-05-27
+--------------------
 
 ##### Enhancements
 * Score documents widget ([#632](../../pull/632))
@@ -259,8 +297,10 @@ Change Log
 --------------------
 
 
-[next]: https://github.com/biolab/orange3-text/compare/1.4.0...HEAD
-[1.3.1]: https://github.com/biolab/orange3-text/compare/1.3.1...1.4.0
+[next]: https://github.com/biolab/orange3-text/compare/1.4.1...HEAD
+[1.5.1]: https://github.com/biolab/orange3-text/compare/1.5.0...1.5.1
+[1.5.0]: https://github.com/biolab/orange3-text/compare/1.4.0...1.5.0
+[1.4.0]: https://github.com/biolab/orange3-text/compare/1.3.1...1.4.0
 [1.3.1]: https://github.com/biolab/orange3-text/compare/1.3.0...1.3.1
 [1.3.0]: https://github.com/biolab/orange3-text/compare/1.2.0...1.3.0
 [1.2.0]: https://github.com/biolab/orange3-text/compare/1.1.0...1.2.0

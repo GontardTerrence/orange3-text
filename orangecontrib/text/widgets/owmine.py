@@ -1,18 +1,16 @@
+import os
+
 from AnyQt.QtCore import Qt
 from AnyQt.QtWidgets import QApplication, QGridLayout, QLabel, QFormLayout
 from Orange.widgets import gui
 from Orange.widgets import settings
-from Orange.widgets.widget import OWWidget, Msg, Output
 from Orange.widgets.credentials import CredentialManager
+from Orange.widgets.widget import OWWidget, Msg, Output
 
-from Orange import data
 from orangecontrib.text.corpus import Corpus
-from orangecontrib.text.language_codes import lang2code, code2lang
-from orangecontrib.text.widgets.utils import ComboBox, ListEdit, CheckListLayout, asynchronous
-
+from orangecontrib.text.language_codes import code2lang
 from orangecontrib.text.mine import MineAPI, MineCredentials
-#from orangecontrib.text.mine im
-
+from orangecontrib.text.widgets.utils import ListEdit, CheckListLayout, asynchronous
 
 
 class OWMine(OWWidget):
@@ -45,6 +43,8 @@ class OWMine(OWWidget):
                 self.key_edit.setText(self.cm_key.key)
 
         def save_credentials(self):
+            # If the Key is correct the value is stored with
+            # the CredentialManager
             self.cm_key.key = self.key_input
 
         def check_credentials(self):
@@ -63,12 +63,12 @@ class OWMine(OWWidget):
                 super().accept()
             elif not silent:
                 self.Error.invalid_credentials()
+
     """ Get articles from Mine. """
     name = 'Mine'
     priority = 160
     icon = 'icons/MINE-Logo-orange.svg'
-    
-   
+
     class Outputs:
         corpus = Output("Corpus", Corpus)
         
@@ -249,7 +249,7 @@ class OWMine(OWWidget):
 
 
 if __name__ == '__main__':
-    #key = os.getenv('THE_GUARDIAN_API_KEY', 'test')
+    key = os.getenv('THE_MINE_API_KEY', 'test')
     credentials = MineCredentials(key)
     api = MineAPI(credentials=credentials)
     app = QApplication([])

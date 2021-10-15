@@ -1,13 +1,9 @@
-
-import requests
-
-
-from Orange import data
-from orangecontrib.text import Corpus
-
-
-import json
 import re
+from datetime import datetime
+import requests
+from Orange import data
+from Orange.widgets.credentials import CredentialManager
+from orangecontrib.text import Corpus
 
 API_URL = 'https://mine-graph.de/api/search'
 RATE_LIMIT = False
@@ -22,22 +18,16 @@ class MineCredentials:
             key (str): The Guardian API key. Use `test` for testing purposes.
         """
         self.key = key
+        print('CALL to MineCredentials: __init__; with the key:')
+        print(self.key)
 
     @property
     def valid(self):
         """ Check if given API key is valid. """
-        print('WWWWWWWWWWWW')
-        print(self.key)
-        print('FFFFFFFFFFFF')
-        print(' ')
-        response = requests.get('https://mine-graph.de/api/search', {'token': self.key})
         return True
     
     def key(self, key):
-        if valid:
-            return self.key
-        else:
-            print('Token not Valid')
+        return self.key
 
     def __eq__(self, other):
         return self.key == other.key
@@ -77,7 +67,6 @@ def search(query, results=10, suggestion=False):
         'a': False,
         'p': 1,
         's': results
-        
     }
     
     raw_results = _wiki_request(search_params)
@@ -432,10 +421,14 @@ def _wiki_request(params):
     params['format'] = 'json'
     if not 'action' in params:
         params['action'] = 'query'
-        
+
+    cm_key = CredentialManager('The Mine API Key')
+    print(cm_key.key)
+    print('----------------------------')
+
     headers = {
-        'Content-type': 'application/json'
-        
+        'Content-type': 'application/json',
+        'token': cm_key.key
     }
 
     if RATE_LIMIT and RATE_LIMIT_LAST_CALL and \
@@ -496,7 +489,6 @@ class MineAPI:
                 are returned in a Corpus.
             on_progress (callable): Callback for progress bar.
         """
-       
         set_lang(lang)
 
         results = []
@@ -539,5 +531,5 @@ class MineAPI:
                         
             return res
     
-        except PageError:
+        except mine.exceptions.PageError:
             return []

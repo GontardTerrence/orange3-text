@@ -87,9 +87,6 @@ class OWMine(OWWidget):
 
     info_label = 'Articles count {:d}'
 
-   #class Error(OWWidget.Error):
-    #    api_error = Msg('API error: {}')
-
     class Warning(OWWidget.Warning):
         no_text_fields = Msg('Text features are inferred when none are selected.')
         
@@ -110,16 +107,12 @@ class OWMine(OWWidget):
         # Queries configuration
         layout = QGridLayout()
         layout.setSpacing(7)
-        
-        
+
         self.api_dlg = self.MineDialog(self)
         #self.api_dlg.accept(silent=True)
         gui.button(self.controlArea, self, 'The Mine API Key',
                    callback=self.api_dlg.exec_, focusPolicy=Qt.NoFocus)
-                    
-        #row = 0
-        #self.query_edit = ListEdit(self, 'query_list', "Each line represents a "
-        #                                               "separate query.", 100, self)
+
         row = 0
         self.query_edit2 = ListEdit(self, 'query_list', "Each line represents a separate query.", 30, self)
         #layout.addWidget(QLabel('Query word list:'), row, 0, 1, self.label_width)
@@ -139,20 +132,18 @@ class OWMine(OWWidget):
         row += 1
         layout.addWidget(QLabel('Articles per query:'), row, 0, 1, self.label_width)
         slider = gui.valueSlider(query_box, self, 'articles_per_query', box='',
-                                 values=[1, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90, 95, 100])
+                      values=[1, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90, 95, 100])
         layout.addWidget(slider.box, row, 1, 1, self.widgets_width)
 
         query_box.layout().addLayout(layout)
         self.controlArea.layout().addWidget(query_box)
 
         self.controlArea.layout().addWidget(
-        CheckListLayout('Text includes', self, 'text_includes', self.attributes, cols=2, callback=self.set_text_features))
+        CheckListLayout('Text includes', self, 'text_includes', self.attributes, cols=2,
+                        callback=self.set_text_features))
 
         self.info_box = gui.hBox(self.controlArea, 'Info')
         self.result_label = gui.label(self.info_box, self, self.info_label.format(0))
-        
-        #self.info_box2 = gui.hBox(self.controlArea, 'Info')
-        #self.result_label2 = gui.label(self.info_box, self, self.info_label.format(0))
 
         self.button_box = gui.hBox(self.controlArea)
 
@@ -161,29 +152,14 @@ class OWMine(OWWidget):
 
         self.button_box = gui.hBox(self.controlArea)
 
-        #self.search_button2 = gui.button(self.button_box, self, 'mineApiTest', self.mine_request)
-        #self.search_button2.setFocusPolicy(Qt.NoFocus)
-
-        
-    
-    #def mine_request(self):
-    #    try:
-     #       self.search_button2.setText('response-Code' + '200')
-     #   except:
-     #       self.search_button2.setText('mineApi-ConnectionTimeout')
-     #   return mc.mine_request()
-    
     def token(self):
         token = MineCredentials.key
-        
         return token
     
     def update_api(self, api):
         self.Error.no_api.clear()
         self.api = MineAPI(api)
-                                  
 
-    
     def start_stop(self):
         if self.search.running:
             self.search.stop()
@@ -197,7 +173,6 @@ class OWMine(OWWidget):
                                 on_progress=self.progress_with_info,
                                 should_break=self.search.should_break)
         return tempd
-       
 
     @search.callback(should_raise=False)
     def progress_with_info(self, progress, n_retrieved):
@@ -216,7 +191,6 @@ class OWMine(OWWidget):
     def on_result(self, result):
         self.result = result
         self.result_label.setText(self.info_label.format(len(result) if result else 0))
-        #self.search_button2.setText('mineApiTest')
         self.search_button.setText('Search')
         self.set_text_features()
         self.progressBarFinished()
@@ -227,16 +201,10 @@ class OWMine(OWWidget):
             self.Warning.no_text_fields()
 
         if self.result is not None:
-            #print('WWWWWWWWWWWW44')
-            #print(self.result)
-            #print('FFFFFFFFFFFF44')
-            #print(' ')
             vars_ = [var for var in self.result.domain.metas if var.name in self.text_includes]
             self.result.set_text_features(vars_ or None)
             self.Outputs.corpus.send(self.result)
-            #print('TTTTTTTT')
-            #print(self.result)
-            
+
     def send_report(self):
         if self.result:
             items = (('Language', code2lang[self.language]),

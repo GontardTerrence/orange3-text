@@ -192,9 +192,6 @@ class OWMine(OWWidget):
 
     @asynchronous
     def search(self):
-        #print('WWWWWWWWWWWW2')t
-        #print(self)
-        #print('FFFFFFFFFFFF2')
         tempd = self.api.search(token=self.token, lang=self.language, queries=self.query_list,
                                 articles_per_query=self.articles_per_query,
                                 on_progress=self.progress_with_info,
@@ -251,7 +248,7 @@ class OWMine(OWWidget):
 if __name__ == '__main__':
     key = os.getenv('THE_MINE_API_KEY', 'test')
     credentials = MineCredentials(key)
-    api = MineAPI(credentials=credentials)
+    api = MineAPI()
     app = QApplication([])
     widget = OWMine()
     widget.show()

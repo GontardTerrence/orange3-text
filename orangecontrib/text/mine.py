@@ -34,13 +34,8 @@ class MineCredentials:
 
 def set_lang(prefix):
     '''
-  Change the language of the API being requested.
-  Set `prefix` to one of the two letter prefixes found on the `list of all Mines <http://meta.wikimedia.org/wiki/List_of_Wikipedias>`_.
-
-  After setting the language, the cache for ``search``, ``suggest``, and ``summary`` will be cleared.
-
-  .. note:: Make sure you search for page titles in the language that you have set.
-  '''
+    Change the language of the API being requested.
+    '''
     global API_URL
     API_URL = 'https://mine-graph.de/api/search'
 
@@ -75,14 +70,7 @@ def search(query, results=10, suggestion=False):
             raise HTTPTimeoutError(query)
         else:
             raise WikipediaException(raw_results['error']['info'])
-    #search_title = (d['_source']['origin']['title'] for d in raw_results['hits']['hits'])
-    print('WWWWWWWWWWWW55')
-    print(raw_results)
-    print('FFFFFFFFFFFF55')
-    print(' ')
     return raw_results
-    
-
 
 def suggest(query):
     '''
@@ -233,25 +221,6 @@ class MinePage(object):
             request = _wiki_request(query_params)
         return []
 
-    @property
-    def revision_id(self):
-        '''
-    Revision ID of the page.
-
-    The revision ID is a number that uniquely identifies the current
-    version of the page. It can be used to create the permalink or for
-    other direct API calls. See `Help:Page history
-    <http://en.wikipedia.org/wiki/Wikipedia:Revision>`_ for more
-    information.
-    '''
-
-        if not getattr(self, '_revid', False):
-            # fetch the content (side effect is loading the revid)
-            self.content
-            self._revision_id = 1
-        return self._revision_id
-   
-   
     @property
     def abstract(self):
         '''
@@ -423,9 +392,6 @@ def _wiki_request(params):
         params['action'] = 'query'
 
     cm_key = CredentialManager('The Mine API Key')
-    print(cm_key.key)
-    print('----------------------------')
-
     headers = {
         'Content-type': 'application/json',
         'token': cm_key.key

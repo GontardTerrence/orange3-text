@@ -12,7 +12,6 @@ from orangecontrib.text.language_codes import code2lang
 from orangecontrib.text.mine import MineAPI, MineCredentials
 from orangecontrib.text.widgets.utils import ListEdit, CheckListLayout, asynchronous
 
-
 class OWMine(OWWidget):
     class MineDialog(OWWidget):
         name = 'The Mine Credentials'
@@ -109,24 +108,13 @@ class OWMine(OWWidget):
         layout.setSpacing(7)
 
         self.api_dlg = self.MineDialog(self)
-        #self.api_dlg.accept(silent=True)
         gui.button(self.controlArea, self, 'The Mine API Key',
                    callback=self.api_dlg.exec_, focusPolicy=Qt.NoFocus)
 
         row = 0
-        self.query_edit2 = ListEdit(self, 'query_list', "Each line represents a separate query.", 30, self)
-        #layout.addWidget(QLabel('Query word list:'), row, 0, 1, self.label_width)
-        #layout.addWidget(self.query_edit, row, self.label_width, 1,
-        #                self.widgets_width)
-        
+        self.query_edit2 = ListEdit(self, 'query_list', "Each line represents a separate query.", 30, self)       
         layout.addWidget(QLabel('Query:'), row, 0, 1, self.label_width)
         layout.addWidget(self.query_edit2, row, self.label_width, 1, self.widgets_width)
-
-        # Language
-      #  row += 1
-       # language_edit = ComboBox(self, 'language', tuple(sorted(lang2code.items())))
-      #  layout.addWidget(QLabel('Language:'), row, 0, 1, self.label_width)
-       # layout.addWidget(language_edit, row, self.label_width, 1, self.widgets_width)
 
         # Articles per query
         row += 1

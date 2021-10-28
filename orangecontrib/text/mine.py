@@ -120,7 +120,6 @@ def page(title, pageid=None, auto_suggest=True, redirect=True, preload=False):
         
         return MinePage(title)
   
-  
 class MinePage(object):
     '''
   Contains data from a Mine page.
@@ -251,7 +250,6 @@ class MinePage(object):
         self._date = title
         return self._date
         
-    
     @property
     def resource(self):
         '''
@@ -261,7 +259,6 @@ class MinePage(object):
         self._resource = title
         return self._resource
 
-    
     @property
     def titlett(self):
         '''
@@ -296,7 +293,6 @@ class MinePage(object):
         except KeyError:
             return 'no authors'
 
-    
     @property
     def categories(self):
         '''
@@ -356,8 +352,6 @@ class MinePage(object):
             next_index = len(self.content)
 
         return self.content[index:next_index].lstrip("=").strip()
-
-
 
 def languages():
     '''
@@ -423,17 +417,13 @@ class MineAPI:
     metas = [
         (data.StringVariable('Title'), lambda doc: getattr(doc, 'titlett')),
         (data.StringVariable('Abstract'), lambda doc: getattr(doc, 'abstract')),
-        #(data.StringVariable('Url'), lambda doc: getattr(doc, 'url')),
         (data.StringVariable('Authors'), lambda doc: getattr(doc, 'authors')),
         (data.StringVariable('Date'), lambda doc: getattr(doc, 'date')),
-        (data.StringVariable('Format'), lambda doc: getattr(doc, 'format')),
-        #(data.ContinuousVariable('Page ID', number_of_decimals=0), lambda doc: int(getattr(doc, 'pageid'))),
-        #(data.ContinuousVariable('Revision ID', number_of_decimals=0), lambda doc: int(getattr(doc, 'revision_id'))),
+        (data.StringVariable('Format'), lambda doc: getattr(doc, 'format')),     
         (data.StringVariable('Resource'), lambda doc: getattr(doc, 'resource')),
         (data.DiscreteVariable('Query'), lambda doc: getattr(doc, 'query')),
         (data.StringVariable('Content'), lambda doc: getattr(doc, 'token_content')),
     ]
-   
     
     attributes = []
     class_vars = []
@@ -475,11 +465,8 @@ class MineAPI:
             except:
                 return []
         
-        
         return Corpus.from_documents(results, 'mineKopie', self.attributes,
-                                            self.class_vars, self.metas, title_indices=[-1])
-        
-        
+                                            self.class_vars, self.metas, title_indices=[-1])   
     def _get(self, article, query, should_break, recursive=True):
         try:
             article = page(article)
